@@ -1,36 +1,52 @@
-name: Deploy # workflow name
+name: Hexo
 
 on:
-  [push] # 触发事件
+  push:
+    branches:
+      - master
+
+env:
+  TZ: Asia/Shanghai
 
 jobs:
-  build: # job1 id
-    runs-on: ubuntu-latest # 运行环境为最新版 Ubuntu
-    name: A job to deploy blog.
+  blog-cicd:
+    name: Hexo build and deploy
+    runs-on: ubuntu-latest
+
     steps:
-    - name: Checkout # step1 获取源码
-      uses: actions/checkout@v1 # 使用 actions/checkout@v1
-      with: # 条件
-        submodules: true # Checkout private submodules(themes or something else). 当有子模块时切换分支？
+      - name: Checkout codes
+        uses: actions/checkout@v2
+        with:
+          submodules: 'true'
 
-    # Caching dependencies to speed up workflows. (GitHub will remove any cache entries that have not been accessed in over 7 days.) 缓存压缩 node_modules，不用每次下载，使用时解压，可以加快工作流的执行过程，超过 7 天没有使用将删除压缩包。
-    - name: Cache node modules # step2
-      uses: actions/cache@v1
-      id: cache
-      with:
-        path: node_modules
-        key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
-        restore-keys: |
-          ${{ runner.os }}-node-
-    - name: Install Dependencies # step3 name
-      if: steps.cache.outputs.cache-hit != 'true' # 如果变量 cache-hit 不等于 true
-      run: npm install # 安装 node modules 相关依赖
+      - name: Setup node
+        uses: actions/setup-node@v1.1.0
+        with:
+          version: "12.x"
 
-    # Deploy hexo blog website.
-    - name: Deploy # step4
-      id: deploy
-      uses: sma11black/hexo-action@v1.0.0
-      with:
-        deploy_key: ${{ secrets.DEPLOY_KEY }}
-        user_name: shaobo0123
-        user_email: 1036566628@qq.com
+      - name: Cache Node Dependencies
+        id: cache
+        uses: actions/cache@v2
+        with:
+          path: ~/.npm
+          key: ${{runner.OS}}-npm-caches-${{ hashFiles('package-lock.json') }}
+
+      - name: Install dependencies
+        run: |
+          npm install hexo-cli -g
+          npm install
+
+      - name: Generate files
+        run: |
+#          mv ./_config.theme.yml ./themes/themename/_config.yml
+          hexo generate
+
+      - name: Deploy blog
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          personal_token: ${{ secrets.GH_TOKEN }}
+          external_repository: ${{ secrets.GH_REF }}
+          publish_branch: master
+          publish_dir: ./public
+          full_commit_message: GitHub Actions Auto Builder
+          disable_nojekyll: true
