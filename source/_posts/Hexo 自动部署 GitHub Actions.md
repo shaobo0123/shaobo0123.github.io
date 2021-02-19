@@ -154,8 +154,8 @@ deploy:
 #### 如何将代码下载到本地
 ```
 git init  //初始化git仓库
-git remote add abcd https://github.com/yourname/yourname.github.io.git  //然后连接至远程仓库
-git pull abcd hexo  //下载到本地
+git remote add origin https://github.com/yourname/yourname.github.io.git  //然后连接至远程仓库
+git pull origin hexo  //下载到本地
 ```
 > yourname替换为你的用户名
 
@@ -164,9 +164,9 @@ git pull abcd hexo  //下载到本地
 ```
 git add .
 git commit -m "message"
-git push -u abcd hexo  //上传到远程仓库
+git push -u origin master:hexo  //上传到远程仓库，冒号左边为本地分支名称，冒号右边为要部署到的远程分支名
 ```
-> 注意：abcd名称可随意， hexo为分支名称
+> 注意：origin名称可随意， hexo为分支名称
 
 
 
