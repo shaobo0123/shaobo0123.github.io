@@ -38,7 +38,7 @@ jobs:
 
       - name: Generate files
         run: |
-
+        mv ./_config.butterfly.yml ./themes/Butterfly/_config.yml
           hexo generate
 
       - name: Deploy blog
