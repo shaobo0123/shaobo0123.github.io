@@ -1,36 +1,52 @@
-name: Deploy
+name: Hexo
 
-on: [push]
+on:
+  push:
+    branches:
+      - master
+
+env:
+  TZ: Asia/Shanghai
 
 jobs:
-  build:
+  blog-cicd:
+    name: Hexo build and deploy
     runs-on: ubuntu-latest
-    name: deploy hexo
-    steps:
-    - name: Checkout
-      uses: actions/checkout@v1
-      with:
-        submodules: true 
 
-# 使用缓存加速nodejs的安装,如果超过七天没有访问,就会删除缓存
-# npm插件会读取package.json来安装
-    - name: Cache node modules
-      uses: actions/cache@v1
-      id: cache
-      with:
-        path: node_modules
-        key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
-        restore-keys: |
-          ${{ runner.os }}-node-
-    - name: Install Dependencies
-      if: steps.cache.outputs.cache-hit != 'true'
-      run: npm install
-    
-# 部署hexo
-    - name: Deploy
-      id: deploy
-      uses: sma11black/hexo-action@v1.0.0
-      with:
-        deploy_key: ${{ secrets.DEPLOY_KEY }}
-        user_name: shaobo0123
-        user_email: 1036566628@qq.com
+    steps:
+      - name: Checkout codes
+        uses: actions/checkout@v2
+        with:
+          submodules: 'true'
+
+      - name: Setup node
+        uses: actions/setup-node@v1.1.0
+        with:
+          version: "12.x"
+
+      - name: Cache Node Dependencies
+        id: cache
+        uses: actions/cache@v2
+        with:
+          path: ~/.npm
+          key: ${{runner.OS}}-npm-caches-${{ hashFiles('package-lock.json') }}
+
+      - name: Install dependencies
+        run: |
+          npm install hexo-cli -g
+          npm install
+
+      - name: Generate files
+        run: |
+#          mv ./_config.theme.yml ./themes/themename/_config.yml
+          hexo generate
+
+      - name: Deploy blog
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          personal_token: ${{ secrets.GH_TOKEN }}
+          external_repository: ${{ secrets.GH_REF }}
+          publish_branch: master
+          publish_dir: ./public
+          full_commit_message: GitHub Actions Auto Builder
+          disable_nojekyll: true
