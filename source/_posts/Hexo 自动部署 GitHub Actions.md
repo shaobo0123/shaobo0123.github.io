@@ -1,4 +1,6 @@
-# Hexo 自动部署 GitHub Actions
+---
+title: Hexo 自动部署 GitHub Actions
+---
 
 # 1. 创建仓库
 
@@ -17,7 +19,7 @@ GitHub 博客创建步骤非本文重点，请自行搜索。
 ```
  ~ ssh-keygen -t rsa -b 4096 -C "$(git config user.email)" -f github-deploy-key -N ""
 ```
-> 若无源码分支可查看后续步骤 [点击跳转](#XStcb)
+> 若无源码分支可查看文章末尾
 
 
 
