@@ -1,0 +1,36 @@
+name: Deploy
+
+on: [push]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    name: deploy hexo
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v1
+      with:
+        submodules: true 
+
+# 使用缓存加速nodejs的安装,如果超过七天没有访问,就会删除缓存
+# npm插件会读取package.json来安装
+    - name: Cache node modules
+      uses: actions/cache@v1
+      id: cache
+      with:
+        path: node_modules
+        key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+        restore-keys: |
+          ${{ runner.os }}-node-
+    - name: Install Dependencies
+      if: steps.cache.outputs.cache-hit != 'true'
+      run: npm install
+    
+# 部署hexo
+    - name: Deploy
+      id: deploy
+      uses: sma11black/hexo-action@v1.0.0
+      with:
+        deploy_key: ${{ secrets.DEPLOY_KEY }}
+        user_name: shaobo0123
+        user_email: 1036566628@qq.com
