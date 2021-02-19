@@ -161,7 +161,6 @@ git pull origin hexo  //下载到本地
 ```
 > yourname替换为你的用户名
 
-#### 
 #### 上传到远程仓库
 ```
 git add .
