@@ -1,5 +1,5 @@
 ---
-title: Hexo 自动部署 GitHub Actions
+title: Hexo 使用 GitHub Actions 自动部署
 ---
 
 # 1. 创建仓库
