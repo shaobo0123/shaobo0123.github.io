@@ -299,7 +299,11 @@ gitalk:
   repo:
   owner:
   admin:
+<<<<<<< HEAD
   language: en # en, zh-CN, zh-TW, es-ES, fr, ru
+=======
+  language: zh-CN # en, zh-CN, zh-TW, es-ES, fr, ru
+>>>>>>> fe833448a5a13d15bbf847d0df3ae34822e091b0
   perPage: 10 # Pagination size, with maximum 100.
   distractionFreeMode: false # Facebook-like distraction free mode.
   pagerDirection: last # Comment sorting direction, available values are last and first.

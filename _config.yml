@@ -98,7 +98,11 @@ ignore:
 # Extensions
 ## Plugins: https://hexo.io/plugins/
 ## Themes: https://hexo.io/themes/
+<<<<<<< HEAD
 theme: butterfly
+=======
+theme: Butterfly
+>>>>>>> fe833448a5a13d15bbf847d0df3ae34822e091b0
 
 # Deployment
 ## Docs: https://hexo.io/docs/one-command-deployment
