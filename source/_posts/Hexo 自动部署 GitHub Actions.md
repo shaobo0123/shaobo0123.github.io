@@ -59,7 +59,7 @@ GitHub 博客创建步骤非本文重点，请自行搜索。
 在 GitHub 中博客工程中按照 `Settings`->`Secrets`->`Add a new secrets` 找到对应的页面，然后进行私钥添加。该页面中 `Name` 自定义即可，`Value` 中添加 `github-deploy-key` 文件中的内容。
 
 
-![](https://segmentfault.com/img/remote/1460000022360773#align=left&display=inline&height=563&margin=%5Bobject%20Object%5D&originHeight=563&originWidth=800&status=done&style=none&width=800)
+![](https://cdn.nlark.com/yuque/0/2021/png/643664/1613755383821-3471ec48-4d87-4e7b-95f4-e25d109efb56.png)
 
 
 > 注意：切记不要多复制空格!!!
