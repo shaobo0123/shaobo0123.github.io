@@ -45,7 +45,7 @@ GitHub 博客创建步骤非本文重点，请自行搜索。
 在 GitHub 中博客工程中按照 `Settings`->`Deploye keys`->`Add deploy key` 找到对应的页面，然后进行公钥添加。该页面中 `Title` 自定义即可，`Key` 中添加 `github-deploy-key.pub` 文件中的内容。
 
 
-![](https://segmentfault.com/img/remote/1460000022360772#align=left&display=inline&height=445&margin=%5Bobject%20Object%5D&originHeight=445&originWidth=800&status=done&style=none&width=800)
+![](hhttps://zsbo.herokuapp.com/%E5%9B%BE%E7%89%87/20d84815-bdf4-4db3-ba8c-d66a63ab8bcf%20.png)
 
 
 > 注意：切记不要多复制空格!!!
