@@ -1,5 +1,15 @@
 ---
 title: Hexo 使用 GitHub Actions 自动部署
+default_cover:
+  - https://cdn.jsdelivr.net/gh/jerryc127/CDN@latest/cover/default_bg.png
+  - https://cdn.jsdelivr.net/gh/jerryc127/CDN@latest/cover/default_bg2.png
+  - https://cdn.jsdelivr.net/gh/jerryc127/CDN@latest/cover/default_bg3.png
+
+
+作者: Jerry
+連結: https://butterfly.js.org/posts/4aa8abbe/#%E6%96%87%E7%AB%A0%E5%B0%81%E9%9D%A2
+來源: Butterfly
+著作權歸作者所有。商業轉載請聯絡作者獲得授權，非商業轉載請註明出處。
 ---
 
 # 1. 创建仓库
