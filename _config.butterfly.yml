@@ -300,7 +300,7 @@ gitalk:
   client_secret: d3ddd63daa816e8d9b90e05d79840a4a11a2e8fe
   repo: gittalk
   owner: shaobo0123
-  admin: "['shaobo0123']"
+  admin: shaobo0123
   language: zh-CN # en, zh-CN, zh-TW, es-ES, fr, ru
   perPage: 20 # Pagination size, with maximum 100.
   distractionFreeMode: false # Facebook-like distraction free mode.
