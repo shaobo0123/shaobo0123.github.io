@@ -365,7 +365,7 @@ twikoo:
 
 # Chat Button [recommend]
 # It will create a button in the bottom right corner of website, and hide the origin button
-chat_btn: false
+chat_btn: true
 
 # The origin chat button is displayed when scrolling up, and the button is hidden when scrolling down
 chat_hide_show: false
@@ -386,7 +386,7 @@ tidio:
 # http://daovoice.io/
 daovoice:
   enable: false
-  app_id:
+  app_id: e6fbc745
 
 # gitter
 # https://gitter.im/
