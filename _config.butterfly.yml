@@ -368,7 +368,7 @@ twikoo:
 chat_btn: true
 
 # The origin chat button is displayed when scrolling up, and the button is hidden when scrolling down
-chat_hide_show: false
+chat_hide_show: true
 
 # chatra
 # https://chatra.io/
@@ -385,7 +385,7 @@ tidio:
 # daovoice
 # http://daovoice.io/
 daovoice:
-  enable: false
+  enable: true
   app_id: e6fbc745
 
 # gitter
