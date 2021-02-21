@@ -3,7 +3,7 @@ title: Hexo 使用 GitHub Actions 自动部署
 cover: https://cdn.jsdelivr.net/gh/jerryc127/CDN@latest/cover/default_bg.png
 作者: shaobo
 链接: https://www.shaoblog.cn
-来源: shaobo
+来源: aaa
 ---
 
 # 1. 创建仓库
