@@ -9,7 +9,7 @@ cover: https://cdn.jsdelivr.net/gh/jerryc127/CDN@latest/cover/default_bg.png
 # 1. 创建仓库
 
 
-GitHub 博客创建步骤非本文重点，请自行搜索。
+hexo博客以及github创建仓库详细教程请自行百度。
 推荐使用 `master`/`main` 分支作为最终部署分支。
 > 注意你的主分支是main还是master，若为main，则替换master为main，现在新建仓库主分支都为main，后续一定要注意
 
@@ -24,6 +24,7 @@ GitHub 博客创建步骤非本文重点，请自行搜索。
  ~ ssh-keygen -t rsa -b 4096 -C "$(git config user.email)" -f github-deploy-key -N ""
 ```
 > 若无源码分支可查看文章末尾
+> 注意：user.email不要修改
 
 
 
@@ -45,7 +46,7 @@ GitHub 博客创建步骤非本文重点，请自行搜索。
 在 GitHub 中博客工程中按照 `Settings`->`Deploye keys`->`Add deploy key` 找到对应的页面，然后进行公钥添加。该页面中 `Title` 自定义即可，`Key` 中添加 `github-deploy-key.pub` 文件中的内容。
 
 
-![](https://zsbo.coding.net/p/tuchuang/d/tuchuang/git/raw/master/1.png)
+![](https://zsbo.coding.net/p/tuchuang/d/tuchuang/git/raw/master/image/QQ%E6%88%AA%E5%9B%BE20210224115412.png)
 
 
 > 注意：切记不要多复制空格!!!
@@ -59,7 +60,9 @@ GitHub 博客创建步骤非本文重点，请自行搜索。
 在 GitHub 中博客工程中按照 `Settings`->`Secrets`->`Add a new secrets` 找到对应的页面，然后进行私钥添加。该页面中 `Name` 自定义即可，`Value` 中添加 `github-deploy-key` 文件中的内容。
 
 
-![](https://cdn.nlark.com/yuque/0/2021/png/643664/1613755383821-3471ec48-4d87-4e7b-95f4-e25d109efb56.png)
+![](https://zsbo.coding.net/p/tuchuang/d/tuchuang/git/raw/master/image/QQ%E6%88%AA%E5%9B%BE20210224115612.png)
+
+![](https://zsbo.coding.net/p/tuchuang/d/tuchuang/git/raw/master/image/QQ%E6%88%AA%E5%9B%BE20210224115706.png)
 
 
 > 注意：切记不要多复制空格!!!
@@ -115,12 +118,12 @@ jobs:
 > 代码第5行的hexo为你的分支名称；
 > git config --global user.email "123456789@qq.com"  中的`123456789@qq.com`改为自己的邮箱；
 > git config --global user.name "yourname"中的 `yourname`改为自己的用户名；
-> `secrets.HEXO_DEPLOY_KEY` 就是对应我们之前设置的私钥，所以名字一定不要搞错。
+> `secrets.HEXO_DEPLOY_PRI` 就是对应我们之前设置的私钥，所以名字一定不要搞错。
 
 # 6`_config.yml`文件配置
 
 
-在项目**根目录**中修改 `_config.yml` ，**末尾**增加如下内容：
+在项目**根目录**中修改 `_config.yml` 配置文件，**末尾**增加如下内容：
 
 
 ```
@@ -131,10 +134,10 @@ deploy:
 ```
 
 
-> 再次注意你的主分支是`main`还是`master`，若为`main`，则替换`master`为`main；`
-> yourname替换为自己的用户名；
-> 每个 :(冒号)后面都有一个空格(英文在状态下)
-> 这里的 repo 要填写 ssh 的形式，使用 http 形式可能会有问题。
+> （1）再次注意你的主分支是`main`还是`master`，若为`main`，则替换`master`为`main；`
+>（2） yourname替换为自己的用户名；
+>（3） 每个 :(冒号)后面都有一个空格(英文在状态下)；
+> （4）这里的 repo 要填写 ssh 的形式，使用 http 形式可能会有问题。
 
 
 
@@ -145,7 +148,7 @@ deploy:
 执行过程可以在 Actions 中查看：
 
 
-![](https://segmentfault.com/img/remote/1460000022360774#align=left&display=inline&height=373&margin=%5Bobject%20Object%5D&originHeight=373&originWidth=800&status=done&style=none&width=800)
+![](https://zsbo.coding.net/p/tuchuang/d/tuchuang/git/raw/master/image/QQ%E6%88%AA%E5%9B%BE20210224115737.png)
 
 
 
@@ -174,7 +177,3 @@ git commit -m "message"
 git push -u origin master:hexo  //上传到远程仓库，冒号左边为本地分支名称，冒号右边为要部署到的远程分支名
 ```
 > 注意：origin名称可随意， hexo为分支名称
-
-
-
-本文引用自[https://segmentfault.com/a/1190000022360769](https://segmentfault.com/a/1190000022360769)
