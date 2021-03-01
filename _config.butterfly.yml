@@ -397,7 +397,7 @@ gitter:
 # crisp
 # https://crisp.chat/en/
 crisp:
-  enable: false
+  enable: true
   website_id: c566fed1-8259-4f8d-812c-041d5b51b3f0
 
 # Footer Settings
