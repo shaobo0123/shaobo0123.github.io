@@ -1,5 +1,5 @@
 ---
-title: Hexo 使用 GitHub Actions 自动部署教程
+title: Hexo使用GitHub Actions自动部署教程
 cover: https://cdn.jsdelivr.net/gh/jerryc127/CDN@latest/cover/default_bg.png
 作者: shaobo
 链接: https://www.shaoblog.cn
