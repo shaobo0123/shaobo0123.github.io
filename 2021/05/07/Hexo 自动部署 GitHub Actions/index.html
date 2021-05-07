@@ -1,0 +1,235 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Hexo使用GitHub Actions自动部署教程 | Hexo</title><meta name="author" content="John Doe"><meta name="copyright" content="John Doe"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="1. 创建仓库hexo博客以及github创建仓库详细教程请自行百度。推荐使用 master&#x2F;main 分支作为最终部署分支。  注意你的主分支是main还是master，若为main，则替换master为main，现在新建仓库主分支都为main，后续一定要注意  这里的关键是要创另一个分支，我这里创建的是 hexo。 2. 生成公私钥源码分支中通过下面命令生成公钥和私钥。 1~ ssh-keyg">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Hexo使用GitHub Actions自动部署教程">
+<meta property="og:url" content="http://example.com/2021/05/07/Hexo%20%E8%87%AA%E5%8A%A8%E9%83%A8%E7%BD%B2%20GitHub%20Actions/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="1. 创建仓库hexo博客以及github创建仓库详细教程请自行百度。推荐使用 master&#x2F;main 分支作为最终部署分支。  注意你的主分支是main还是master，若为main，则替换master为main，现在新建仓库主分支都为main，后续一定要注意  这里的关键是要创另一个分支，我这里创建的是 hexo。 2. 生成公私钥源码分支中通过下面命令生成公钥和私钥。 1~ ssh-keyg">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/jerryc127/CDN@latest/cover/default_bg.png">
+<meta property="article:published_time" content="2021-05-07T02:52:38.823Z">
+<meta property="article:modified_time" content="2021-05-07T02:52:38.823Z">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://cdn.jsdelivr.net/gh/jerryc127/CDN@latest/cover/default_bg.png"><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="http://example.com/2021/05/07/Hexo%20%E8%87%AA%E5%8A%A8%E9%83%A8%E7%BD%B2%20GitHub%20Actions/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    jQuery: 'https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js',
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/js/jquery.justifiedGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/css/justifiedGallery.min.css'
+    },
+    fancybox: {
+      js: 'https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isanchor: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = { 
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2021-05-07 02:52:38'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    })(window)</script><meta name="generator" content="Hexo 5.3.0"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="author-avatar"><img class="avatar-img" src="/null" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data"><div class="data-item is-center"><div class="data-item-link"><a href="/archives/"><div class="headline">文章</div><div class="length-num">2</div></a></div></div></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><i class="fa-fw fas fa-list"></i><span> 清单</span><i class="fas fa-chevron-down expand"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/music/"><i class="fa-fw fas fa-music"></i><span> 音乐</span></a></li><li><a class="site-page" href="/movies/"><i class="fa-fw fas fa-video"></i><span> 电影</span></a></li><li><a class="site-page" href="/Gallery/"><i class="fa-fw fas fa-images"></i><span> 照片</span></a></li></ul></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('https://cdn.jsdelivr.net/gh/jerryc127/CDN@latest/cover/default_bg.png')"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">Hexo</a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><i class="fa-fw fas fa-list"></i><span> 清单</span><i class="fas fa-chevron-down expand"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/music/"><i class="fa-fw fas fa-music"></i><span> 音乐</span></a></li><li><a class="site-page" href="/movies/"><i class="fa-fw fas fa-video"></i><span> 电影</span></a></li><li><a class="site-page" href="/Gallery/"><i class="fa-fw fas fa-images"></i><span> 照片</span></a></li></ul></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">Hexo使用GitHub Actions自动部署教程</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2021-05-07T02:52:38.823Z" title="发表于 2021-05-07 02:52:38">2021-05-07</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2021-05-07T02:52:38.823Z" title="更新于 2021-05-07 02:52:38">2021-05-07</time></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h1 id="1-创建仓库"><a href="#1-创建仓库" class="headerlink" title="1. 创建仓库"></a>1. 创建仓库</h1><p>hexo博客以及github创建仓库详细教程请自行百度。<br>推荐使用 <code>master</code>/<code>main</code> 分支作为最终部署分支。</p>
+<blockquote>
+<p>注意你的主分支是main还是master，若为main，则替换master为main，现在新建仓库主分支都为main，后续一定要注意</p>
+</blockquote>
+<p>这里的关键是要创<strong>另一个分支</strong>，我这里创建的是 <code>hexo</code>。</p>
+<h1 id="2-生成公私钥"><a href="#2-生成公私钥" class="headerlink" title="2. 生成公私钥"></a>2. 生成公私钥</h1><p>源码分支中通过下面命令生成公钥和私钥。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">~ ssh-keygen -t rsa -b 4096 -C &quot;$(git config user.email)&quot; -f github-deploy-key -N &quot;&quot;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>若无源码分支可查看文章末尾<br>注意：user.email不要修改</p>
+</blockquote>
+<p>目录中生成两个文件：</p>
+<ul>
+<li><code>github-deploy-key.pub</code> — 公钥文件</li>
+<li><code>github-deploy-key</code> — 私钥文件</li>
+</ul>
+<blockquote>
+<p>文件在你的本地文件夹生成</p>
+</blockquote>
+<h1 id="3-GitHub-添加公钥"><a href="#3-GitHub-添加公钥" class="headerlink" title="3.GitHub 添加公钥"></a>3.GitHub 添加公钥</h1><p>在 GitHub 中博客工程中按照 <code>Settings</code>-&gt;<code>Deploye keys</code>-&gt;<code>Add deploy key</code> 找到对应的页面，然后进行公钥添加。该页面中 <code>Title</code> 自定义即可，<code>Key</code> 中添加 <code>github-deploy-key.pub</code> 文件中的内容。</p>
+<p><img src="https://zsbo.coding.net/p/tuchuang/d/tuchuang/git/raw/master/image/QQ%E6%88%AA%E5%9B%BE20210224115412.png"></p>
+<blockquote>
+<p>注意：切记不要多复制空格!!!<br>切记要勾选 <code>Allow write access</code>，否则会出现无法部署的情况。</p>
+</blockquote>
+<h1 id="4-GitHub-添加私钥"><a href="#4-GitHub-添加私钥" class="headerlink" title="4.GitHub 添加私钥"></a>4.GitHub 添加私钥</h1><p>在 GitHub 中博客工程中按照 <code>Settings</code>-&gt;<code>Secrets</code>-&gt;<code>Add a new secrets</code> 找到对应的页面，然后进行私钥添加。该页面中 <code>Name</code> 自定义即可，<code>Value</code> 中添加 <code>github-deploy-key</code> 文件中的内容。</p>
+<p><img src="https://zsbo.coding.net/p/tuchuang/d/tuchuang/git/raw/master/image/QQ%E6%88%AA%E5%9B%BE20210224115612.png"></p>
+<p><img src="https://zsbo.coding.net/p/tuchuang/d/tuchuang/git/raw/master/image/QQ%E6%88%AA%E5%9B%BE20210224115706.png"></p>
+<blockquote>
+<p>注意：切记不要多复制空格!!!</p>
+</blockquote>
+<h1 id="5-创建workflows脚本"><a href="#5-创建workflows脚本" class="headerlink" title="5. 创建workflows脚本"></a>5. 创建workflows脚本</h1><p>在博客源码分支 (我这里是 hexo 分支) 中创建 <code>.github/workflows/HexoCI.yml</code> 文件，内容如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line">name: CI</span><br><span class="line">on:</span><br><span class="line">  push:</span><br><span class="line">    branches:</span><br><span class="line">      - hexo</span><br><span class="line">jobs:</span><br><span class="line">  build:</span><br><span class="line">    runs-on: ubuntu-latest</span><br><span class="line"></span><br><span class="line">    steps:</span><br><span class="line">      - name: Checkout source</span><br><span class="line">        uses: actions&#x2F;checkout@v1</span><br><span class="line">        with:</span><br><span class="line">          ref: hexo</span><br><span class="line">      - name: Use Node.js $&#123;&#123; matrix.node_version &#125;&#125;</span><br><span class="line">        uses: actions&#x2F;setup-node@v1</span><br><span class="line">        with:</span><br><span class="line">          version: $&#123;&#123; matrix.node_version &#125;&#125;</span><br><span class="line">      - name: Setup hexo</span><br><span class="line">        env:</span><br><span class="line">          ACTION_DEPLOY_KEY: $&#123;&#123; secrets.HEXO_DEPLOY_PRI &#125;&#125;</span><br><span class="line">        run: |</span><br><span class="line">          mkdir -p ~&#x2F;.ssh&#x2F;</span><br><span class="line">          echo &quot;$ACTION_DEPLOY_KEY&quot; &gt; ~&#x2F;.ssh&#x2F;id_rsa</span><br><span class="line">          chmod 600 ~&#x2F;.ssh&#x2F;id_rsa</span><br><span class="line">          ssh-keyscan github.com &gt;&gt; ~&#x2F;.ssh&#x2F;known_hosts</span><br><span class="line">          npm install --save hexo-deployer-git</span><br><span class="line">          git config --global user.email &quot;123456789@qq.com&quot;</span><br><span class="line">          git config --global user.name &quot;yourname&quot;</span><br><span class="line">          npm install hexo-cli -g</span><br><span class="line">          npm install</span><br><span class="line">      - name: Hexo deploy</span><br><span class="line">        run: |</span><br><span class="line">          hexo clean</span><br><span class="line">          hexo d</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>注意：<br>代码第5行的hexo为你的分支名称；<br>git config –global user.email “<a href="mailto:&#x31;&#x32;&#51;&#x34;&#x35;&#x36;&#x37;&#x38;&#x39;&#64;&#x71;&#x71;&#x2e;&#99;&#111;&#109;">&#x31;&#x32;&#51;&#x34;&#x35;&#x36;&#x37;&#x38;&#x39;&#64;&#x71;&#x71;&#x2e;&#99;&#111;&#109;</a>“  中的<code>123456789@qq.com</code>改为自己的邮箱；<br>git config –global user.name “yourname”中的 <code>yourname</code>改为自己的用户名；<br><code>secrets.HEXO_DEPLOY_PRI</code> 就是对应我们之前设置的私钥，所以名字一定不要搞错。</p>
+</blockquote>
+<h1 id="6-config-yml文件配置"><a href="#6-config-yml文件配置" class="headerlink" title="6_config.yml文件配置"></a>6<code>_config.yml</code>文件配置</h1><p>在项目<strong>根目录</strong>中修改 <code>_config.yml</code> 配置文件，<strong>末尾</strong>增加如下内容：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">deploy:</span><br><span class="line">  type: &#39;git&#39;</span><br><span class="line">  repo: git@github.com:yourname&#x2F;yourname.github.io.git</span><br><span class="line">  branch: master</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>（1）再次注意你的主分支是<code>main</code>还是<code>master</code>，若为<code>main</code>，则替换<code>master</code>为<code>main；</code><br>（2） yourname替换为自己的用户名；<br>（3） 每个 :(冒号)后面都有一个空格(英文在状态下)；<br>（4）这里的 repo 要填写 ssh 的形式，使用 http 形式可能会有问题。</p>
+</blockquote>
+<h1 id="7-验证"><a href="#7-验证" class="headerlink" title="7. 验证"></a>7. 验证</h1><p>现在 Hexo 已经和 GitHub Actions 已经集成了，接下来在博客源码分支上推送代码即可自动编译部署。具体<br>执行过程可以在 Actions 中查看：</p>
+<p><img src="https://zsbo.coding.net/p/tuchuang/d/tuchuang/git/raw/master/image/QQ%E6%88%AA%E5%9B%BE20210224115737.png"></p>
+<h1 id="8-常见问题"><a href="#8-常见问题" class="headerlink" title="8. 常见问题"></a>8. 常见问题</h1><h2 id="部署完后如何写代码"><a href="#部署完后如何写代码" class="headerlink" title="部署完后如何写代码"></a>部署完后如何写代码</h2><p>若更换了设备，或重装了系统，在配置环境十分困难，这里只需要将hexo分支代码下载到本地，修改，上传，自动部署到master/main分支。<br>或者在GitHub中直接修改也可以自动部署。</p>
+<h4 id="如何将代码下载到本地"><a href="#如何将代码下载到本地" class="headerlink" title="如何将代码下载到本地"></a>如何将代码下载到本地</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">git init  &#x2F;&#x2F;初始化git仓库</span><br><span class="line">git remote add origin https:&#x2F;&#x2F;github.com&#x2F;yourname&#x2F;yourname.github.io.git  &#x2F;&#x2F;然后连接至远程仓库</span><br><span class="line">git pull origin hexo  &#x2F;&#x2F;下载到本地</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>yourname替换为你的用户名</p>
+</blockquote>
+<h4 id="上传到远程仓库"><a href="#上传到远程仓库" class="headerlink" title="上传到远程仓库"></a>上传到远程仓库</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">git add .</span><br><span class="line">git commit -m &quot;message&quot;</span><br><span class="line">git push -u origin master:hexo  &#x2F;&#x2F;上传到远程仓库，冒号左边为本地分支名称，冒号右边为要部署到的远程分支名</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>注意：origin名称可随意， hexo为分支名称</p>
+</blockquote>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="mailto:undefined">John Doe</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="http://example.com/2021/05/07/Hexo%20%E8%87%AA%E5%8A%A8%E9%83%A8%E7%BD%B2%20GitHub%20Actions/">http://example.com/2021/05/07/Hexo%20%E8%87%AA%E5%8A%A8%E9%83%A8%E7%BD%B2%20GitHub%20Actions/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://example.com" target="_blank">Hexo</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"></div><div class="post_share"><div class="social-share" data-image="https://cdn.jsdelivr.net/gh/jerryc127/CDN@latest/cover/default_bg.png" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/social-share.js/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="next-post pull-full"><a href="/2021/05/07/hello-world/"><img class="next-cover" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">Hello World</div></div></a></div></nav><hr/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> 评论</span></div></div><div class="comment-wrap"><div><div class="vcomment" id="vcomment"></div></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="card-info-avatar is-center"><img class="avatar-img" src="/null" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/><div class="author-info__name">John Doe</div><div class="author-info__description"></div></div><div class="card-info-data"><div class="card-info-data-item is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">2</div></a></div></div><a class="button--animated" id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/xxxxxx"><i class="fab fa-github"></i><span>Follow Me</span></a></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn card-announcement-animation"></i><span>公告</span></div><div class="announcement_content">This is my Blog</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#1-%E5%88%9B%E5%BB%BA%E4%BB%93%E5%BA%93"><span class="toc-number">1.</span> <span class="toc-text">1. 创建仓库</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#2-%E7%94%9F%E6%88%90%E5%85%AC%E7%A7%81%E9%92%A5"><span class="toc-number">2.</span> <span class="toc-text">2. 生成公私钥</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#3-GitHub-%E6%B7%BB%E5%8A%A0%E5%85%AC%E9%92%A5"><span class="toc-number">3.</span> <span class="toc-text">3.GitHub 添加公钥</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#4-GitHub-%E6%B7%BB%E5%8A%A0%E7%A7%81%E9%92%A5"><span class="toc-number">4.</span> <span class="toc-text">4.GitHub 添加私钥</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#5-%E5%88%9B%E5%BB%BAworkflows%E8%84%9A%E6%9C%AC"><span class="toc-number">5.</span> <span class="toc-text">5. 创建workflows脚本</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#6-config-yml%E6%96%87%E4%BB%B6%E9%85%8D%E7%BD%AE"><span class="toc-number">6.</span> <span class="toc-text">6_config.yml文件配置</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#7-%E9%AA%8C%E8%AF%81"><span class="toc-number">7.</span> <span class="toc-text">7. 验证</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#8-%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98"><span class="toc-number">8.</span> <span class="toc-text">8. 常见问题</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%83%A8%E7%BD%B2%E5%AE%8C%E5%90%8E%E5%A6%82%E4%BD%95%E5%86%99%E4%BB%A3%E7%A0%81"><span class="toc-number">8.1.</span> <span class="toc-text">部署完后如何写代码</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%A6%82%E4%BD%95%E5%B0%86%E4%BB%A3%E7%A0%81%E4%B8%8B%E8%BD%BD%E5%88%B0%E6%9C%AC%E5%9C%B0"><span class="toc-number">8.1.0.1.</span> <span class="toc-text">如何将代码下载到本地</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%B8%8A%E4%BC%A0%E5%88%B0%E8%BF%9C%E7%A8%8B%E4%BB%93%E5%BA%93"><span class="toc-number">8.1.0.2.</span> <span class="toc-text">上传到远程仓库</span></a></li></ol></li></ol></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2021/05/07/Hexo%20%E8%87%AA%E5%8A%A8%E9%83%A8%E7%BD%B2%20GitHub%20Actions/" title="Hexo使用GitHub Actions自动部署教程"><img src="https://cdn.jsdelivr.net/gh/jerryc127/CDN@latest/cover/default_bg.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Hexo使用GitHub Actions自动部署教程"/></a><div class="content"><a class="title" href="/2021/05/07/Hexo%20%E8%87%AA%E5%8A%A8%E9%83%A8%E7%BD%B2%20GitHub%20Actions/" title="Hexo使用GitHub Actions自动部署教程">Hexo使用GitHub Actions自动部署教程</a><time datetime="2021-05-07T02:52:38.823Z" title="发表于 2021-05-07 02:52:38">2021-05-07</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2021/05/07/hello-world/" title="Hello World"><img src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Hello World"/></a><div class="content"><a class="title" href="/2021/05/07/hello-world/" title="Hello World">Hello World</a><time datetime="2021-05-07T02:52:38.823Z" title="发表于 2021-05-07 02:52:38">2021-05-07</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2021 By John Doe</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><a id="to_comment" href="#post-comment" title="直达评论"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><div class="js-pjax"><script>function loadValine () {
+  function initValine () {
+    let initData = {
+      el: '#vcomment',
+      appId: 'ChoLFsLjGfavIQBVcGYcTof8-gzGzoHsz',
+      appKey: '08ij1N3qTwgiTEYYHkB7XAMY',
+      placeholder: '请留下你的昵称和邮箱',
+      avatar: 'monsterid',
+      meta: 'nick,mail,link'.split(','),
+      pageSize: '10',
+      lang: 'zh-CN',
+      recordIP: false,
+      serverURLs: '',
+      emojiCDN: '',
+      emojiMaps: "",
+      enableQQ: true,
+      path: window.location.pathname,
+    }
+
+    if (true) { 
+      initData.requiredFields= ('nick,mail'.split(','))
+    }
+    
+    if (false) {
+      const otherData = false
+      initData = Object.assign(initData, otherData)
+    }
+    
+    const valine = new Valine(initData)
+  }
+
+  if (typeof Valine === 'function') initValine() 
+  else getScript('https://cdn.jsdelivr.net/npm/valine/dist/Valine.min.js').then(initValine)
+}
+
+if ('Valine' === 'Valine' || !true) {
+  if (true) btf.loadComment(document.getElementById('vcomment'),loadValine)
+  else setTimeout(loadValine, 0)
+} else {
+  function loadOtherComment () {
+    loadValine()
+  }
+}</script></div><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>
